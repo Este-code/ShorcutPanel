@@ -9,9 +9,11 @@ namespace ShortcutPanel
     public partial class Form1 : Form
     {
         DB_Connection connection = new DB_Connection();
+       
         public Form1()
         {
             InitializeComponent();
+           
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -68,10 +70,10 @@ namespace ShortcutPanel
                     if (control.GetType() == typeof(Button))
                     {
                         Button button = (Button)control;
-                        connection.insertData(button.Name, "D:\\Projects\\ShortcutPanel\\ShortcutPanel\\img\\plus.png", button.Name, "0");
+                        connection.insertData(button.Name, System.IO.Path.Combine(Program.executingFolder,"img\\plus.png"), button.Name, "0");
 
                         button.BackColor = Color.LightGray;
-                        button.Image = Image.FromFile("D:\\Projects\\ShortcutPanel\\ShortcutPanel\\img\\plus.png");
+                        button.Image = Image.FromFile(System.IO.Path.Combine(Program.executingFolder, "img\\plus.png"));
                         button.BackgroundImageLayout = ImageLayout.Zoom;
                     }
                 }
@@ -111,10 +113,10 @@ namespace ShortcutPanel
 
         private void Delete_Shortcut(object sender, EventArgs e, Button button)
         {
-            connection.updateData(button.Name, "D:\\Projects\\ShortcutPanel\\ShortcutPanel\\img\\plus.png", button.Name, "0");
+            connection.updateData(button.Name, System.IO.Path.Combine(Program.executingFolder, "img\\plus.png"), button.Name, "0");
 
             button.BackColor = Color.LightGray;
-            button.Image = Image.FromFile("D:\\Projects\\ShortcutPanel\\ShortcutPanel\\img\\plus.png");
+            button.Image = Image.FromFile(System.IO.Path.Combine(Program.executingFolder, "img\\plus.png"));
             button.BackgroundImageLayout = ImageLayout.Zoom;
             button.Click -= Open_Shortcut;
             button.Click += new EventHandler(Add_Shortcut);
@@ -162,8 +164,8 @@ namespace ShortcutPanel
                 Button button = (Button)sender;
 
                 ContextMenuStrip cm = new ContextMenuStrip();
-                cm.Items.Add("Modifica", Image.FromFile("D:\\Projects\\ShortcutPanel\\ShortcutPanel\\img\\edit.png"), delegate (object sender, EventArgs e) { Modify_Shortcut(sender, e, button); });
-                cm.Items.Add("Cancella", Image.FromFile("D:\\Projects\\ShortcutPanel\\ShortcutPanel\\img\\delete.png"), delegate (object sender, EventArgs e) { Delete_Shortcut(sender, e, button); });
+                cm.Items.Add("Modifica", Image.FromFile(System.IO.Path.Combine(Program.executingFolder, "img\\edit.png")), delegate (object sender, EventArgs e) { Modify_Shortcut(sender, e, button); });
+                cm.Items.Add("Cancella", Image.FromFile(System.IO.Path.Combine(Program.executingFolder, "img\\delete.png")), delegate (object sender, EventArgs e) { Delete_Shortcut(sender, e, button); });
 
                 cm.Show(Cursor.Position);
             }

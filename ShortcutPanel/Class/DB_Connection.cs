@@ -11,17 +11,66 @@ namespace ShortcutPanel.Class
     internal class DB_Connection
     {
         private SQLiteConnection sqlite;
+        private string source;
 
         public DB_Connection()
         {
-            sqlite = new SQLiteConnection("Data Source=D:\\Projects\\ShortcutPanel\\ShortcutPanel\\Storage\\db.sqlite3");
+            source = "Data Source=" + System.IO.Path.Combine(Program.executingFolder, "Storage\\db.sqlite3");
+
+            if (File.Exists(System.IO.Path.Combine(Program.executingFolder, "Storage\\db.sqlite3"))) {
+                sqlite = new SQLiteConnection(source);
+                try
+                {
+                    SQLiteCommand cmd;
+
+                    if (sqlite.State.ToString() != "Open")
+                    {
+                        sqlite.Open();
+                    }
+
+                    cmd = sqlite.CreateCommand();
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS SP_Info (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, name VARCHAR(255), path VARCHAR(255), buttonRef VARCHAR(255), flag VARCHAR(1));";
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                sqlite.Close();
+            }
+            else
+            {
+                SQLiteConnection.CreateFile(System.IO.Path.Combine(Program.executingFolder, "Storage\\db.sqlite3"));
+                sqlite = new SQLiteConnection(source);
+                try
+                {
+                    SQLiteCommand cmd;
+
+                    if (sqlite.State.ToString() != "Open")
+                    {
+                        sqlite.Open();
+                    }
+
+                    cmd = sqlite.CreateCommand();
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS SP_Info (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, name VARCHAR(255), path VARCHAR(255), buttonRef VARCHAR(255), flag VARCHAR(1));";
+                    cmd.ExecuteNonQuery();
+
+                }
+                catch (SQLiteException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                sqlite.Close();
+            }
+
         }
 
         public DataTable getData()
         {
             SQLiteDataAdapter ad;
             DataTable dt = new DataTable();
-
+            Console.WriteLine(source);
             try
             {
                 SQLiteCommand cmd;

@@ -2,6 +2,7 @@ namespace ShortcutPanel
 {
     internal static class Program
     {
+        public static string executingFolder = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -12,6 +13,7 @@ namespace ShortcutPanel
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
+            
         }
     }
 }
